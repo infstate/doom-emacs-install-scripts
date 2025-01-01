@@ -1,5 +1,5 @@
 
-#!/bin/sh -e
+#!/bin/bash
 # This script if just for the one line quick start 
 # Credits to Linutil by ChrisTitus.
 # Prevent execution if this script was only partially downloaded
