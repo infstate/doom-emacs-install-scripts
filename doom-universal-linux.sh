@@ -112,7 +112,7 @@ while true; do
     read -p "[doom-emacs-install-scripts] Install Doom-Emacs on your system? " yn
     case $yn in
         [Yy]* ) echo "Continuing with installation"; break;;
-        [Nn]* ) exit;;
+        [Nn]* ) exit 1;;
         * ) echo "Please answer yes or no.";;
     esac
 done
