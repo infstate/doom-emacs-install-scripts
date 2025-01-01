@@ -29,7 +29,7 @@ chmod +x "$TMPFILE"
 check $? "Making script executable"
 
 "$TMPFILE"
-check $? "Executing doom-universal-linux.sh"
+echo "Executing doom-universal-linux.sh"
 
 rm -f "$TMPFILE"
 check $? "Deleting the temporary file"
