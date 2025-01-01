@@ -1,5 +1,4 @@
-
-#!/bin/bash
+#!/bin/sh -e
 # This script if just for the one line quick start 
 # Credits to Linutil by ChrisTitus.
 # Prevent execution if this script was only partially downloaded
@@ -29,7 +28,7 @@ check $? "Downloading unversal"
 chmod +x "$TMPFILE"
 check $? "Making script executable"
 
-"$TMPFILE" "$@"
+"$TMPFILE"
 check $? "Executing doom-universal-linux.sh"
 
 rm -f "$TMPFILE"
