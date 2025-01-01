@@ -25,6 +25,11 @@ chmod +x doom-universal-linux.sh
 ```
 Replace 'doom-universal-linux.sh' with any of the other scripts if you would like.
 
+>[!TIP]
+> (Optional) Use this one liner to run the Quick Start:
+```bash
+curl -fsSL https://github.com/infstate/doom-emacs-install-scripts/raw/refs/heads/main/quickstart.sh | sh
+```
 ## Ubuntu 24.04.1 LTS
 Installing on ubuntu compiles from scratch (emacs-29.4 + nativecomp) (Extracts source in build/ dir)
 Try Doom-minimal-ubuntu first, if it fails
