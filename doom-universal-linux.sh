@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/bash
 
 RC='\033[0m'  # From Linutil
 RED='\033[31m'
