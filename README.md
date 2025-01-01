@@ -1,6 +1,7 @@
 # doom-emacs-install-scripts
 Simple scripts for installing Doom Emacs
-
+> [!IMPORTANT]  
+> It is recommended you view how the script works before running (don't worry it's short). View the source code.
 
 ## Usage and Runnng
 
@@ -13,7 +14,7 @@ Select your script and make sure permissisons are correct with (chmod +x), then 
 Supported distros for universal autoinstall. (Ubuntu, Fedora, Arch)
 Supported shells for universal autoinstall. (Bash, Zsh, Fish)
 
-Default installation dir (~/.doom.d)(~/.emacs.d)
+Default installation dir ~/.doom.d and ~/.emacs.d
 
 ## Ubuntu 24.04.1 LTS
 Installing on ubuntu compiles from scratch (emacs-29.4 + nativecomp) (Extracts source in build/ dir)
@@ -28,3 +29,15 @@ For Ubuntu you have 3 scripts:
 | doom-minmal-ubuntu.sh | Minimal install(Without installing extra packages)    |
 | doom-ubuntu.sh | Installs everything |
 | doom-universal-linux.sh    | Detects distro and installs accordingly   |
+
+
+
+# Contributing
+If you find a bug make a ticket in the Issues tab or a Pull request if you have a solution.
+
+## Part of Infinite's Code Charity 2025 Event
+
+![CharityBanner](https://raw.githubusercontent.com/infstate/wrenchlib/refs/heads/main/docs/assets/BannerCharity.jpg)
+
+# Join and Contribute!
+
