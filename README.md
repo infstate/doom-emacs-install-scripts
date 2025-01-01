@@ -16,6 +16,11 @@ Supported shells for universal autoinstall. (Bash, Zsh, Fish)
 
 Default installation dir ~/.doom.d and ~/.emacs.d
 
+You can run these scripts with a one liner:
+
+```sh
+curl -fsSL https://github.com/infstate/doom-emacs-install-scripts/raw/refs/heads/main/doom-universal-linux.sh |  sh
+```
 ## Ubuntu 24.04.1 LTS
 Installing on ubuntu compiles from scratch (emacs-29.4 + nativecomp) (Extracts source in build/ dir)
 Try Doom-minimal-ubuntu first, if it fails
