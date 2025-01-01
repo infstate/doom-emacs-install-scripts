@@ -4,11 +4,9 @@
 # Credits to Linutil by ChrisTitus.
 # Prevent execution if this script was only partially downloaded
 {
+
 RC='\033[0m'
 RED='\033[0;31m'
-
-URL="https://raw.githubusercontent.com/infstate/doom-emacs-install-scripts/refs/heads/main/doom-universal-linux.sh"
-TMPFILE=$(mktemp)
 check() {
     exit_code=$1
     message=$2
@@ -18,6 +16,10 @@ check() {
         exit 1
     fi
 }
+
+URL="https://raw.githubusercontent.com/infstate/doom-emacs-install-scripts/refs/heads/main/doom-universal-linux.sh"
+TMPFILE=$(mktemp)
+
 check $? "Creating the temporary file"
 
 printf "%b\n" "Downloading universal script from $URL"
@@ -28,7 +30,7 @@ chmod +x "$TMPFILE"
 check $? "Making script executable"
 
 "$TMPFILE" "$@"
-check $? "Executing doom-emacs-install-scripts"
+check $? "Executing doom-universal-linux.sh"
 
 rm -f "$TMPFILE"
 check $? "Deleting the temporary file"
