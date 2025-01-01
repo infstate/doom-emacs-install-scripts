@@ -10,3 +10,4 @@ chmod +x doom-universal-linux.sh
 chmod +x doom-minimal-ubuntu.sh
 chmod +x doom-ubuntu.sh
 printf "%b\n" "${GREEN}Enviroment setup! Now just run any of the scripts! (e.g. ./doom-universal-linux.sh) ${RC}"
+cd doom-emacs-install-scripts/
