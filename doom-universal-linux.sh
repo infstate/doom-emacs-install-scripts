@@ -89,7 +89,7 @@ install_package() {
             ;;
         arch)
 	    printf "%b\n" "${YELLOW}Detected Arch Linux ${RC}"
-            sudo pacman -S git rip-grep fd emacs-nativecomp
+            sudo pacman -S git ripgrep fd emacs
             ;;
         opensuse*)
             echo "No Opensuse support for script right now."
