@@ -1,8 +1,5 @@
 #!/bin/sh -e
 RC='\033[0m'  # From Linutil
-RED='\033[31m'
-YELLOW='\033[33m'
-CYAN='\033[36m'
 GREEN='\033[32m'
 git clone https://github.com/infstate/doom-emacs-install-scripts.git
 cd doom-emacs-install-scripts/
