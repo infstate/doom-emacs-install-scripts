@@ -21,58 +21,11 @@ detect_distro() {
 }
 
 compile_from_scratch_ubuntu() {
-	printf "%b\n" "${RED} Removing Previous Emacs Installation! Continue? ${RC}"
-	while true; do
-		read -p "[doom-emacs-install-scripts] Remove Previous Emacs with Apt Remove? (Needed to Continue) " yn
-	    case $yn in
-		[Yy]* ) echo "Continuing with installation"; break;;
-		[Nn]* ) exit;;
-		* ) echo "Please answer yes or no.";;
-	    esac
-	done
-
-	sudo apt remove emacs
-	sudo apt autoremove
-	printf "%b\n" "${CYAN} Installing Dependcies and Libraries for compilation ${RC}"
-	sudo apt-get update
-	sudo apt-get install git wget curl autoconf libtool texinfo automake
-	sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-	sudo sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/ubuntu.sources
-	printf "%b\n" "${CYAN} Adding Deb Src to Ubuntu Sources ${RC}"
-	sudo apt-get update
-	printf "%b\n" "${CYAN} Running apt-get build-dep ${RC}"
-	sudo apt-get build-dep emacs
-	mkdir -p build
-	cd build
-	printf "%b\n" "${CYAN} Created build directory! Use ls after installation to see it! ${RC}"
-	printf "%b\n" "${CYAN} Fetching Emacs 29.4 source tarball ${RC}"
-	mkdir -p build/
-	cd build/
-	wget https://gnu.mirror.constant.com/emacs/emacs-29.4.tar.xz # Update to latest emacs version
-	tar -xvf emacs-29.4.tar.xz
-	rm emacs-29.4.tar.xz
-	mv emacs-29.4/ emacs/
-	printf "%b\n" "${CYAN} Installing additional depencies ${RC}"
-	sudo apt-get install gcc-13 libgccjit0 libgccjit-13-dev -y # Update to latest Gcc Version
-	sudo apt-get install libjansson4 libjansson-dev -y # If you want fast JSON support (Or comment out if not)
-
-	export CC="gcc-13" # Update to latest gcc version (on your system)
-	cd emacs
-	printf "%b\n" "${YELLOW} Attempting to build.... ${RC}"
-
-	./autogen.sh
-	printf "%b\n" "${YELLOW} Configuring with flags... ${RC}"
-	./configure --with-json --with-native-compilation # Remove --with-json if you do not want JSON support)
-	# Change these configure flags if you want. (For example: --without-compress-install, --with-json --with-mailutils)
-	printf "%b\n" "${YELLOW} Starting Make process ${RC}"
-
-	make
-	sudo make install
-	printf "%b\n" "${CYAN} Installing ripgrep and fd ${RC}"
-	sudo apt-get update
-	sudo apt-get install ripgrep fd-find
-	printf "%b\n" "${GREEN} Finished building! Emacs 29.4 + Nativecomp has finished building and is installed! ${RC}"
-
+    sudo apt-get update
+    sudo apt-get install -y emacs
+    sudo apt-get install -y ripgrep fd-find
+    git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
+    ~/.config/emacs/bin/doom install
 }
 
 install_package() {
@@ -83,8 +36,7 @@ install_package() {
             ;;
         fedora)
 	    printf "%b\n" "${YELLOW}Detected Fedora ${RC}"
-            sudo dnf install git ripgrep
-            sudo dnf copr enable deathwish/emacs-pgtk-nativecomp
+            sudo dnf install git ripgrep rust-fd-find
             sudo dnf install emacs
             ;;
         arch)
@@ -92,7 +44,7 @@ install_package() {
             sudo pacman -S git ripgrep fd emacs
             ;;
         opensuse*)
-            echo "No Opensuse support for script right now."
+            sudo zypper install git ripgrep fd emacs
             ;;
         gentoo)
             echo "No Gentoo support for script right now."
@@ -120,11 +72,10 @@ done
 install_package
 
 printf "%b\n" "${GREEN}Cloning Doom-Emacs...${RC}"
-git clone https://github.com/hlissner/doom-emacs ~/.emacs.d
-~/.emacs.d/bin/doom install
-
+git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
+~/.config/emacs/bin/doom install
 # Define the line to be added
-export_line='export PATH="$HOME/.emacs.d/bin:$PATH"'
+export_line='export PATH="$HOME/.config/emacs/bin:$PATH"'
 
 # Function to append the line to a file if it doesn't already exist
 append_if_not_exists() {
@@ -149,7 +100,7 @@ case "$current_shell" in
     fish)
         # Fish uses a different syntax and location
         fish_config="$HOME/.config/fish/config.fish"
-        fish_line='set -gx PATH "$HOME/.emacs.d/bin" $PATH'
+        fish_line='set -gx PATH "$HOME/.config/emacs/bin" $PATH'
         if ! grep -qF "$fish_line" "$fish_config"; then
             echo "$fish_line" >> "$fish_config"
             echo "Added to $fish_config"
