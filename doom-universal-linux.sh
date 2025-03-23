@@ -1,14 +1,8 @@
 #!/bin/sh -e
 
-RC='\033[0m'  # From Linutil
-RED='\033[31m'
-YELLOW='\033[33m'
-CYAN='\033[36m'
-GREEN='\033[32m'
-
 detect_distro() {
     if [ -f /etc/os-release ]; then
-        . /etc/os-release
+        . `/etc/os-release`
         DISTRO=$ID
     elif [ -f /etc/lsb-release ]; then
         . /etc/lsb-release
@@ -20,34 +14,71 @@ detect_distro() {
     DISTRO=$(echo $DISTRO | tr '[:upper:]' '[:lower:]')
 }
 
-compile_from_scratch_ubuntu() {
+compile_from_scratch_ubuntu() { # No longer compiles from scratch since Emacs 30.1
     sudo apt-get update
+    sudo apt-get install -y git
     sudo apt-get install -y emacs
     sudo apt-get install -y ripgrep fd-find
     git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
     ~/.config/emacs/bin/doom install
 }
 
+doom_macosx_installer () {
+    prompt_to_install_homebrew() {
+        while true; do
+            read -p "[doom-emacs-install-scripts] Install Homebrew on your system and continue with installation (Y or N)? " yn
+            case $yn in
+                [Yy]* ) echo "Continuing with installation"; break;;
+                [Nn]* ) exit;;
+                * ) echo "Please answer yes or no.";;
+            esac
+        done
+    }
+
+    if ! command -v brew 2>&1 >/dev/null
+    then
+        echo "Homebrew package manager is not installed."
+        prompt_to_install_homebrew
+        echo "Installing homebrew"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        exit 1
+    fi
+    brew install git ripgrep
+    brew install coreutils fd
+    xcode-select --install || true
+    brew tap d12frosted/emacs-plus
+    brew install emacs-plus
+    osascript -e 'tell application "Finder" to make alias file to posix file "/opt/homebrew/opt/emacs-plus@30/Emacs.app" at posix file "/Applications" with properties {name:"Emacs.app"}' || true
+
+}
+
 install_package() {
     case $DISTRO in
         ubuntu)
-	    printf "%b\n" "${YELLOW}Detected Ubuntu: Compiling from scratch! ${RC}"
+	    echo "Detected Ubuntu"
 	    compile_from_scratch_ubuntu	
             ;;
         fedora)
-	    printf "%b\n" "${YELLOW}Detected Fedora ${RC}"
+	    echo "Detected Fedora"
             sudo dnf install git ripgrep rust-fd-find
             sudo dnf install emacs
             ;;
         arch)
-	    printf "%b\n" "${YELLOW}Detected Arch Linux ${RC}"
+	    echo "Detected Arch Linux"
             sudo pacman -S git ripgrep fd emacs
             ;;
         opensuse*)
             sudo zypper install git ripgrep fd emacs
             ;;
         gentoo)
-            echo "No Gentoo support for script right now."
+            sudo emerge -a dev-vcs/git
+            sudo emerge -a sys-apps/emacs
+            sudo emerge -a sys-apps/ripgrep
+            sudo emerge -a sys-apps/fd
+            ;;
+        darwin)
+            echo "Macos Supported"
+            doom_macosx_installer
             ;;
         *)
             echo "Unsupported distribution: $DISTRO"
@@ -70,8 +101,6 @@ while true; do
 done
 
 install_package
-
-printf "%b\n" "${GREEN}Cloning Doom-Emacs...${RC}"
 git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
 ~/.config/emacs/bin/doom install
 # Define the line to be added
@@ -114,7 +143,5 @@ case "$current_shell" in
         echo "Warning: Unrecognized shell. Added to .profile as a fallback."
         ;;
 esac
-printf "%b\n" "${GREEN}Doom Emacs is now installed! :) ${RC}"
-printf "%b\n" "${GREEN} Added doom binary to path ${RC}"
-
+echo "[doom-emacs-install-scripts] Doom Emacs is now installed! Enjoy :)"
 echo "Please restart your shell or source the configuration file to apply changes."

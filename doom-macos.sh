@@ -31,11 +31,9 @@ done
 
 brew install git ripgrep
 brew install coreutils fd
-xcode-select --install
-
+xcode-select --install || true # Ignore error
 brew tap d12frosted/emacs-plus
 brew install emacs-plus
-osascript -e 'tell application "Finder" to make alias file to posix file "/opt/homebrew/opt/emacs-plus@30/Emacs.app" at posix file "/Applications" with properties {name:"Emacs.app"}'
-
+osascript -e 'tell application "Finder" to make alias file to posix file "/opt/homebrew/opt/emacs-plus@30/Emacs.app" at posix file "/Applications" with properties {name:"Emacs.app"}' || true # Ignore Error
 git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
 ~/.config/emacs/bin/doom install
